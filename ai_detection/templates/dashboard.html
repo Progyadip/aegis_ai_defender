@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aegis AI Defender Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  /* Background & font styling for ethical hacker vibe */
+  @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+
+  body {
+    font-family: 'Source Code Pro', monospace;
+    margin: 20px;
+    background-color: #0f0f0f;
+    background-image:
+      radial-gradient(circle at 0 0, #00ff0040, transparent 30%),
+      radial-gradient(circle at 100% 100%, #00ff0040, transparent 30%);
+    color: #00ff00;
+  }
+
+  h1, h2 {
+    text-align: center;
+    text-shadow: 0 0 5px #00ff00;
+  }
+
+  #threat-count {
+    font-size: 24px;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  #risk-level {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .risk-low {
+    color: #33ff33;
+  }
+  .risk-medium {
+    color: #ffcc00;
+  }
+  .risk-high {
+    color: #ff3300;
+  }
+
+  canvas {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto 40px auto;
+    border: 1px solid #00ff00aa;
+    box-shadow: 0 0 15px #00ff00aa;
+    border-radius: 6px;
+  }
+
+  /* Threat details table styling */
+  .threat-details {
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+    background: #001100cc;
+    border: 1px solid #00ff00aa;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 20px #00ff00cc;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #00ff00;
+  }
+
+  th, td {
+    padding: 10px;
+    border-bottom: 1px solid #004400;
+    text-align: left;
+  }
+
+  th {
+    background-color: #003300;
+  }
+
+  tr:hover {
+    background-color: #00550055;
+  }
+
+  /* Scroll if too many rows */
+  tbody {
+    max-height: 300px;
+    overflow-y: auto;
+    display: block;
+  }
+  thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+</style>
+</head>
+<body>
+  <h1>A.E.G.I.S AI Defender Dashboard</h1>
+  <div id="threat-count">Loading threat count...</div>
+  <div id="risk-level"></div>
+
+  <h2>Threats by Hour</h2>
+  <canvas id="hourlyChart"></canvas>
+
+  <div class="threat-details">
+    <h2>Recent Threat Details</h2>
+    <table id="threatTable">
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Threat Type</th>
+          <th>Recommended Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="3" style="text-align:center;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+<script>
+function getRiskLevel(count) {
+  if (count >= 20) return { label: "High Risk", className: "risk-high" };
+  if (count >= 5) return { label: "Medium Risk", className: "risk-medium" };
+  return { label: "Low Risk", className: "risk-low" };
+}
+
+async function fetchThreatData() {
+  const res = await fetch('/api/threats');
+  const data = await res.json();
+  const count = data.count || 0;
+  document.getElementById('threat-count').textContent = `Total Threats Detected: ${count}`;
+
+  // Show risk level based on threat count
+  const risk = getRiskLevel(count);
+  const riskDiv = document.getElementById('risk-level');
+  riskDiv.textContent = `Risk Level: ${risk.label}`;
+  riskDiv.className = risk.className;
+}
+
+async function fetchThreatStats() {
+  const res = await fetch('/api/threats/stats');
+  const data = await res.json();
+  return data.hourly_counts;
+}
+
+function createChart(labels, counts) {
+  const ctx = document.getElementById('hourlyChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Threats Detected',
+        data: counts,
+        backgroundColor: 'rgba(0, 255, 0, 0.6)'
+      }]
+    },
+    options: {
+      scales: {
+        y: { beginAtZero: true, stepSize: 1 }
+      },
+      plugins: {
+        legend: { labels: { color: '#00ff00' } }
+      }
+    }
+  });
+}
+
+async function fetchThreatDetails() {
+  const res = await fetch('/api/threats/detailed');
+  const threats = await res.json();
+  const tbody = document.querySelector("#threatTable tbody");
+  tbody.innerHTML = "";  // Clear loading
+
+  if (threats.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No threats detected yet.</td></tr>';
+    return;
+  }
+
+  threats.forEach(t => {
+    const tr = document.createElement("tr");
+    const ts = new Date(t.timestamp).toLocaleString();
+    tr.innerHTML = `
+      <td>${ts}</td>
+      <td>${t.threat_type || 'N/A'}</td>
+      <td>${t.action || 'N/A'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function init() {
+  await fetchThreatData();
+  const hourlyCounts = await fetchThreatStats();
+
+  // Sort labels by datetime
+  const labels = Object.keys(hourlyCounts).sort();
+  const counts = labels.map(label => hourlyCounts[label]);
+
+  createChart(labels, counts);
+  await fetchThreatDetails();
+}
+
+init();
+</script>
+
+</body>
+</html>

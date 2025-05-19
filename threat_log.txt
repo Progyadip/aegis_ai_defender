@@ -1,0 +1,15 @@
+2025-05-17 15:37:20.661391 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-17 15:37:25.678166 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-17 15:37:30.696794 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-17 15:58:22.952692 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-17 17:57:57.383150 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-17 17:58:02.403080 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-17 17:58:07.422653 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-17 17:58:12.441210 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-17 17:58:17.459020 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-17 17:58:22.475194 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-19 09:23:02.135783 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-19 09:23:07.163294 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-19 09:23:17.229714 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-19 09:23:22.249428 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.
+2025-05-19 09:23:27.268441 - Threat detected - Type: Ransomware Behavior Detected - Action: Isolate affected system, run full malware scan, restore backups.

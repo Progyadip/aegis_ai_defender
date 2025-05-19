@@ -1,0 +1,11 @@
+flask
+scikit-learn
+xgboost
+psutil
+watchdog
+pyshark
+streamlit
+numpy
+pandas
+matplotlib
+joblib
